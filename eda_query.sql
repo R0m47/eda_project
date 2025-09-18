@@ -183,7 +183,7 @@ ON p.product_key = f.product_key
 GROUP BY p.product_name
 ORDER BY total_revenue DESC;
 
---Using Window Functions
+-- Which 5 products generate the highest revenue? (Window Functions Version)
 SELECT * 
 FROM(
 SELECT
@@ -194,7 +194,7 @@ FROM gold.fact_sales AS f
 LEFT JOIN gold.dim_products AS p
 ON p.product_key = f.product_key
 GROUP BY p.product_name
-) t
+) AS temp
 WHERE rank_product <= 5
 
 
@@ -207,6 +207,22 @@ LEFT JOIN gold.dim_products AS p
 ON p.product_key = f.product_key
 GROUP BY p.product_name
 ORDER BY total_revenue ASC;
+
+-- What are the 5 worst-performing products in terms of sales? (Window Functions Version)
+SELECT *
+FROM (
+SELECT
+	p.product_name,
+	SUM(f.sales_amount) AS 'total_revenue',
+	ROW_NUMBER() OVER (ORDER BY SUM(f.sales_amount) ASC) AS rank_revenue
+FROM gold.fact_sales AS f
+LEFT JOIN gold.dim_products AS p
+ON p.product_key = f.product_key
+GROUP BY p.product_name
+) AS temp
+WHERE rank_revenue <= 5;
+
+
 
 -- Find the top 10 customers who have generated the highest revenue
 SELECT TOP 10
