@@ -239,6 +239,26 @@ GROUP BY
 	c.last_name
 ORDER BY customer_revenue DESC;
 
+-- Find the top 10 customers who have generated the highest revenue (Window Functions Version)
+SELECT *
+FROM (
+SELECT
+	c.customer_key,
+	c.first_name,
+	c.last_name,
+	SUM(f.sales_amount) AS 'customer_revenue',
+	ROW_NUMBER() OVER (ORDER BY SUM(f.sales_amount) DESC) AS rank_revenue
+FROM gold.fact_sales AS f
+LEFT JOIN gold.dim_customers AS c
+ON c.customer_key = f.customer_key
+GROUP BY 
+	c.customer_key,
+	c.first_name,
+	c.last_name
+) AS temp
+WHERE rank_revenue <= 10;
+
+
 -- The 3 customers with the fewest orders placed
 SELECT TOP 3
 	c.customer_key,
@@ -253,3 +273,22 @@ GROUP BY
 	c.first_name,
 	c.last_name
 ORDER BY total_orders;
+
+-- The 3 customers with the fewest orders placed (Window Functions Version)
+SELECT * 
+FROM (
+	SELECT
+		c.customer_key,
+		c.first_name,
+		c.last_name,
+		COUNT(DISTINCT order_number) AS 'total_orders',
+		ROW_NUMBER() OVER (ORDER BY COUNT(DISTINCT order_number) ASC) AS rank_orders
+	FROM gold.fact_sales AS f
+	LEFT JOIN gold.dim_customers AS c
+	ON c.customer_key = f.customer_key
+	GROUP BY 
+		c.customer_key,
+		c.first_name,
+		c.last_name	
+) AS temp
+WHERE rank_orders <= 3;

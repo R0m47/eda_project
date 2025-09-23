@@ -4,18 +4,14 @@ Proyecto enfocado en aplicar técnicas basicas de **análisis con SQL** sobre un
 
 > **Disclaimer / Créditos**  
 > Las bases de datos (estructura/tablas) y la base conceptual de varias consultas están inspiradas en el proyecto de **Baraa Khatib**:  
-> 🔗 https://www.datawithbaraa.com/sql-introduction/advanced-sql-analytics-project/
+> https://www.datawithbaraa.com/sql-introduction/advanced-sql-analytics-project/
 
----
-
-## ⚙️ Requisitos
+## Requisitos
 
 - **SQL Server** (Developer o Express).
 - **SSMS** (SQL Server Management Studio) o **Azure Data Studio**.
 
----
-
-## 🚀 Instalación (tres métodos)
+## Instalación (tres métodos)
 
 > **Orden recomendado:** intentar primero por **Script**. Si no funciona en tu entorno (por permisos o rutas), usar el **.bak**. Como alternativa, puedes hacer la importación manual con **Flat Files**.
 
@@ -27,7 +23,7 @@ Proyecto enfocado en aplicar técnicas basicas de **análisis con SQL** sobre un
    BULK INSERT gold.dim_customers
    FROM 'C:\TU_RUTA\gold.dim_customers.csv';
    ```
-3. Ejecuta el script completo (⚠️ Elimina la base `DataWarehouseAnalytics` si existe).
+3. Ejecuta el script completo (Elimina la base `DataWarehouseAnalytics` si existe).
 4. Verifica que las tablas estén pobladas (`gold.dim_customers`, `gold.dim_products`, `gold.fact_sales`).
 
 ### Método B) Restaurar desde backup `.bak`
@@ -47,9 +43,7 @@ Proyecto enfocado en aplicar técnicas basicas de **análisis con SQL** sobre un
 3. Crea las tablas con la definición incluida en el script.
 4. Usa **Tasks → Import Flat File** en SSMS para cargar cada CSV en su tabla.
 
----
-
-## 📜 Script de inicialización
+## Script de inicialización
 
 El archivo [`scripts/00_init_database.sql`](scripts/00_init_database.sql) incluye:
 
@@ -58,20 +52,16 @@ El archivo [`scripts/00_init_database.sql`](scripts/00_init_database.sql) incluy
 - Definición de las tablas (`dim_customers`, `dim_products`, `fact_sales`).
 - Carga de datos vía **BULK INSERT**.
 
-⚠️ **Advertencia:** El script **elimina** y **recrea** la base si ya existe.
+**Advertencia:** El script **elimina** y **recrea** la base si ya existe.
 
----
-
-## 📝 Notas y buenas prácticas
+## Notas y buenas prácticas
 
 - Las rutas de `BULK INSERT` deben existir en el **servidor donde corre SQL Server** (no en tu PC local si es remoto).
 - Asegúrate de dar permisos de lectura a los archivos CSV para la cuenta del servicio SQL Server.
 
 ---
 
-## 📌 Créditos
+## Créditos
 
 Proyecto educativo inspirado en el trabajo de **Baraa Khatib**  
-🔗 https://www.datawithbaraa.com/sql-introduction/advanced-sql-analytics-project/
-
----
+https://www.datawithbaraa.com/sql-introduction/advanced-sql-analytics-project/
